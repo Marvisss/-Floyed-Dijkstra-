@@ -1,0 +1,54 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAXN 10 
+//设10000为一个无穷大的数
+typedef struct graph
+{
+	int vexs;//顶点数
+	int map[MAXN][MAXN];//存储矩阵 
+};
+void floyd_ShortestPath(graph G);
+
+void floyd_ShortestPath(graph G)
+{
+	int m = 0;//中介点 
+	int i = 0, j = 0;//相邻点 
+	for (m=0; m < G.vexs; m++)
+	{
+		for (i=0; i < G.vexs; i++)
+		{
+			for (j=0; j < G.vexs; j++)
+			{
+				if (G.map[i][j] > G.map[i][m] + G.map[m][j])
+				{
+					G.map[i][j] = G.map[i][m] + G.map[m][j];
+				}
+			}
+		}
+	}
+	printf("\n");
+	for (i = 0; i < G.vexs; i++)
+	{
+		for (j = 0; j < G.vexs; j++)
+			printf("%d ", G.map[i][j]);
+		printf("\n");
+	}
+}
+int main()
+{
+	int i, j;
+	graph G;
+	scanf("%d", &G.vexs);
+	//初始化矩阵
+	getchar();
+	for (i = 0; i < G.vexs; i++)
+	{
+		for (j = 0; j < G.vexs; j++)
+		{
+			scanf("%d",&G.map[i][j]);
+		}
+		getchar();
+	}
+	printf("各点间最短距离矩阵：\n");
+	floyd_ShortestPath(G);
+}
