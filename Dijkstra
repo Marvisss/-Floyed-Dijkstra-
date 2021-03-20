@@ -1,0 +1,53 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<algorithm>
+#define MAXN 10
+struct graph
+{
+	int vexs;//顶点数
+	int map[MAXN][MAXN];//邻接矩阵存储图
+};
+void Dijkstra(int v,graph G);
+
+int main() {
+	graph G;
+	scanf("%d", &G.vexs);
+	getchar();
+	for (int i = 1; i <=G.vexs; i++)
+	{
+		for (int j = 1; j <=G.vexs; j++)
+		{
+			scanf("%d", &G.map[i][j]);
+		}
+	}
+	printf("输入数据后显示a到f的最短距离：\n");
+	Dijkstra(1,G);
+}
+void Dijkstra(int v, graph G) {
+	int visited[MAXN] = { 0 };//0未访问，1访问过
+	int distance[MAXN] = { 10000 };//初始化无穷大
+	distance[v] = 0;
+	visited[v] = 1;
+	for (int i = 1; i <= G.vexs; i++)
+		distance[i] = G.map[v][i];
+	for (int i = 1; i <= G.vexs - 1; i++)
+	{
+		int minn = 10000;
+		int temp = v;
+		for (int j = 1; j <= G.vexs; j++)
+		{
+			if (distance[j] < minn&&visited[j] != 1)
+			{
+				minn = distance[j];
+				temp = j;
+			}
+		}
+		visited[temp] = 1;
+		for (int i = 1; i <= G.vexs; i++)
+		{
+			if (distance[i] > (distance[temp] + G.map[temp][i]))
+				distance[i] = distance[temp] + G.map[temp][i];
+		}
+	}
+	printf("%d,", distance[G.vexs]);
+}
